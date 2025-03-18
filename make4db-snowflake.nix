@@ -10,7 +10,7 @@
 }:
 buildPythonPackage {
   pname = "make4db-snowflake";
-  version = "0.1.1";
+  version = "0.1.2";
   pyproject = true;
 
   src = ./.;
@@ -26,7 +26,7 @@ buildPythonPackage {
   doCheck = false;
 
   meta = with lib; {
-    description = "Snowflake provider for make4db tool";
+    description = "make4db provider for Snowflake";
     maintainers = with maintainers; [ padhia ];
   };
 }

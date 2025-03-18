@@ -1,4 +1,4 @@
-"Snowflake provider for make4db"
+"make4db provider for Snowflake"
 
 import logging
 from argparse import ArgumentParser
@@ -6,9 +6,9 @@ from dataclasses import dataclass
 from functools import cache
 from itertools import islice
 from textwrap import dedent
-from typing import Any, Iterable, NamedTuple, Self, TextIO, cast
+from typing import Any, Callable, Iterable, NamedTuple, Self, TextIO, cast
 
-from make4db.provider import DbAccess, DbProvider, Feature, PySqlFn, SchObj
+from make4db.provider import DDL, DbAccess, DbProvider, Feature, SchObj
 from sfconn import getsess, pytype
 from sfconn.utils import add_conn_args
 from snowflake.snowpark import Session
@@ -17,7 +17,7 @@ from yappt.grid import AsciiBoxStyle
 
 logger = logging.getLogger(__name__)
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 
 class ObjInfo(NamedTuple):
@@ -51,8 +51,12 @@ class SfAcc(DbAccess):
         if self._sess is not None:
             self._sess.close()
 
-    def py2sql(self, fn: PySqlFn, object: str, replace: bool) -> Iterable[str]:
-        yield from fn(self.sess, object, replace)
+    def py2sql(self, fn: Callable[[Session, str, bool], DDL], object: str, replace: bool) -> Iterable[str]:
+        ddl = fn(self.sess, object, replace)
+        if isinstance(ddl, str):
+            yield ddl
+        else:
+            yield from ddl
 
     def execsql(self, sql: str, output: TextIO) -> None:
         with self.sess.connection.cursor() as csr:

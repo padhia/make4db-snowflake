@@ -1,5 +1,5 @@
 # make4db-snowflake
 
-Snowflake provider for the **make4db** tool
+**make4db** provider for Snowflake
 
 See [make4db](https://github.com/padhia/make4db) for more information

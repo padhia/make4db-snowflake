@@ -7,7 +7,7 @@ name = "make4db-snowflake"
 authors = [
     {name = "Paresh Adhia", email = "padhia+github@gmail.com"},
 ]
-description = "Snowflake provider for make4db tool"
+description = "make4db provider for Snowflake"
 readme = "README.md"
 requires-python = ">=3.11"
 classifiers = ["Programming Language :: Python :: 3"]
